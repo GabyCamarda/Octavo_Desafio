@@ -1,0 +1,285 @@
+PS C:\Users\Lenovo> mongo
+MongoDB shell version v5.0.8
+connecting to: mongodb://127.0.0.1:27017/?compressors=disabled&gssapiServiceName=mongodb
+Implicit session: session { "id" : UUID("aeb8c8e9-48b3-4ea8-be9c-843ec6f917ce") }
+MongoDB server version: 5.0.8
+================
+Warning: the "mongo" shell has been superseded by "mongosh",
+which delivers improved usability and compatibility.The "mongo" shell has been deprecated and will be removed in
+an upcoming release.
+For installation instructions, see
+https://docs.mongodb.com/mongodb-shell/install/
+================
+---
+The server generated these startup warnings when booting:
+        2022-05-11T17:21:28.518-05:00: Access control is not enabled for the database. Read and write access to data and configuration is unrestricted
+---
+---
+        Enable MongoDB's free cloud-based monitoring service, which will then receive and display
+        metrics about your deployment (disk utilization, CPU, operation statistics, etc).
+
+        The monitoring data will be available on a MongoDB website with a unique URL accessible to you
+        and anyone you share the URL with. MongoDB may use this information to make product
+        improvements and to suggest MongoDB products and deployment options to you.
+
+        To enable free monitoring, run the following command: db.enableFreeMonitoring()
+        To permanently disable this reminder, run the following command: db.disableFreeMonitoring()
+---
+******LISTAR BASES DE DATOS POR DEFECTO******
+> show dbs
+admin   0.000GB
+config  0.000GB
+local   0.000GB
+
+******CREAR DB ECOMMERCE******
+> use ecommerce
+switched to db ecommerce
+
+******CREAR LAS COLECCIONES MENSAJES Y PRODUCTOS******
+> db.createCollection("productos")
+{ "ok" : 1 }
+> db.createCollection("mensajes")
+{ "ok" : 1 }
+
+******LISTAR LAS COLECCIONES CREADAS******
+> show collections
+mensajes
+productos
+
+******LISTAR LAS DBS, SE CREO CORRECTAMENTE ecommerce******
+> show dbs
+admin      0.000GB
+config     0.000GB
+ecommerce  0.000GB
+local      0.000GB
+
+PUNTO 1 Y 2 : ******INSERTO SIMULTANEAMENTE 11 DOCUMENTOS A LA COLECCION productos CON insertMany()******
+
+> db.productos.insertMany([{  title: "producto1",  price: 100,  thumbnail: "ejemploimg.png"  },  { title: "producto1", price: 2020, thumbnail: "ejemploimg.png" }, { title: "producto1", price: 3100, thumbnail: "ejemploimg.png" }, { title: "producto1", price: 4010, thumbnail: "ejemploimg.png" }, { title: "producto1", price: 2700, thumbnail: "ejemploimg.png" }, { title: "producto1", price: 4900, thumbnail: "ejemploimg.png" }, { title: "producto1", price: 1900, thumbnail: "ejemploimg.png" }, { title: "producto1", price: 5000, thumbnail: "ejemploimg.png" }, { title: "producto1", price: 2300, thumbnail: "ejemploimg.png" }, { title: "producto1", price: 2765, thumbnail: "ejemploimg.png" }, { title: "producto1", price: 4999, thumbnail: "ejemploimg.png" } ])
+{
+        "acknowledged" : true,
+        "insertedIds" : [
+                ObjectId("627d5392f41ad24eed608ef5"),
+                ObjectId("627d5392f41ad24eed608ef6"),
+                ObjectId("627d5392f41ad24eed608ef7"),
+                ObjectId("627d5392f41ad24eed608ef8"),
+                ObjectId("627d5392f41ad24eed608ef9"),
+                ObjectId("627d5392f41ad24eed608efa"),
+                ObjectId("627d5392f41ad24eed608efb"),
+                ObjectId("627d5392f41ad24eed608efc"),
+                ObjectId("627d5392f41ad24eed608efd"),
+                ObjectId("627d5392f41ad24eed608efe"),
+                ObjectId("627d5392f41ad24eed608eff")
+        ]
+}
+
+******INSERTO SIMULTANEAMENTE 10 DOCUMENTOS A LA COLECCION mensajes CON insertMany()******
+> db.mensajes.insertMany([{ user: "correo1@correo.com", text: 100, date: ISODate() }, { user: "correo2@correo.com", text: 2020, date: ISODate() }, { user: "correo3@correo.com", text: 3100, date: ISODate() }, { user: "correo4@correo.com", text: 4010, date: ISODate() }, { user: "correo5@correo.com", text: 2700, date: ISODate() }, { user: "correo6@correo.com", text: 4900, date: ISODate() }, { user: "correo7@correo.com", text: 1900, date: ISODate() }, { user: "correo8@correo.com", text: 5000, date: ISODate() }, { user: "correo9@correo.com", text: 2300, date: ISODate() }, { user: "correo10@correo.com", text: 2765, date: ISODate()}])
+{
+        "acknowledged" : true,
+        "insertedIds" : [
+                ObjectId("627d5514f41ad24eed608f00"),
+                ObjectId("627d5514f41ad24eed608f01"),
+                ObjectId("627d5514f41ad24eed608f02"),
+                ObjectId("627d5514f41ad24eed608f03"),
+                ObjectId("627d5514f41ad24eed608f04"),
+                ObjectId("627d5514f41ad24eed608f05"),
+                ObjectId("627d5514f41ad24eed608f06"),
+                ObjectId("627d5514f41ad24eed608f07"),
+                ObjectId("627d5514f41ad24eed608f08"),
+                ObjectId("627d5514f41ad24eed608f09")
+        ]
+}
+
+PUNTO 3: ******HAGO UN db.productos.find() PARA LISTAR TODA LA COLECCION productos****
+
+> db.productos.find()
+{ "_id" : ObjectId("627d5392f41ad24eed608ef5"), "title" : "producto1", "price" : 100, "thumbnail" : "ejemploimg.png" }
+{ "_id" : ObjectId("627d5392f41ad24eed608ef6"), "title" : "producto1", "price" : 2020, "thumbnail" : "ejemploimg.png" }
+{ "_id" : ObjectId("627d5392f41ad24eed608ef7"), "title" : "producto1", "price" : 3100, "thumbnail" : "ejemploimg.png" }
+{ "_id" : ObjectId("627d5392f41ad24eed608ef8"), "title" : "producto1", "price" : 4010, "thumbnail" : "ejemploimg.png" }
+{ "_id" : ObjectId("627d5392f41ad24eed608ef9"), "title" : "producto1", "price" : 2700, "thumbnail" : "ejemploimg.png" }
+{ "_id" : ObjectId("627d5392f41ad24eed608efa"), "title" : "producto1", "price" : 4900, "thumbnail" : "ejemploimg.png" }
+{ "_id" : ObjectId("627d5392f41ad24eed608efb"), "title" : "producto1", "price" : 1900, "thumbnail" : "ejemploimg.png" }
+{ "_id" : ObjectId("627d5392f41ad24eed608efc"), "title" : "producto1", "price" : 5000, "thumbnail" : "ejemploimg.png" }
+{ "_id" : ObjectId("627d5392f41ad24eed608efd"), "title" : "producto1", "price" : 2300, "thumbnail" : "ejemploimg.png" }
+{ "_id" : ObjectId("627d5392f41ad24eed608efe"), "title" : "producto1", "price" : 2765, "thumbnail" : "ejemploimg.png" }
+{ "_id" : ObjectId("627d5392f41ad24eed608eff"), "title" : "producto1", "price" : 4999, "thumbnail" : "ejemploimg.png" }
+
+
+******HAGO UN db.mensajes.find() PARA LISTAR TODA LA COLECCION mensajes****
+> db.mensajes.find()
+{ "_id" : ObjectId("627d5514f41ad24eed608f00"), "user" : "correo1@correo.com", "text" : 100, "date" : ISODate("2022-05-12T18:42:28.784Z") }
+{ "_id" : ObjectId("627d5514f41ad24eed608f01"), "user" : "correo2@correo.com", "text" : 2020, "date" : ISODate("2022-05-12T18:42:28.784Z") }
+{ "_id" : ObjectId("627d5514f41ad24eed608f02"), "user" : "correo3@correo.com", "text" : 3100, "date" : ISODate("2022-05-12T18:42:28.784Z") }
+{ "_id" : ObjectId("627d5514f41ad24eed608f03"), "user" : "correo4@correo.com", "text" : 4010, "date" : ISODate("2022-05-12T18:42:28.784Z") }
+{ "_id" : ObjectId("627d5514f41ad24eed608f04"), "user" : "correo5@correo.com", "text" : 2700, "date" : ISODate("2022-05-12T18:42:28.784Z") }
+{ "_id" : ObjectId("627d5514f41ad24eed608f05"), "user" : "correo6@correo.com", "text" : 4900, "date" : ISODate("2022-05-12T18:42:28.784Z") }
+{ "_id" : ObjectId("627d5514f41ad24eed608f06"), "user" : "correo7@correo.com", "text" : 1900, "date" : ISODate("2022-05-12T18:42:28.784Z") }
+{ "_id" : ObjectId("627d5514f41ad24eed608f07"), "user" : "correo8@correo.com", "text" : 5000, "date" : ISODate("2022-05-12T18:42:28.784Z") }
+{ "_id" : ObjectId("627d5514f41ad24eed608f08"), "user" : "correo9@correo.com", "text" : 2300, "date" : ISODate("2022-05-12T18:42:28.784Z") }
+{ "_id" : ObjectId("627d5514f41ad24eed608f09"), "user" : "correo10@correo.com", "text" : 2765, "date" : ISODate("2022-05-12T18:42:28.784Z") }
+
+
+PUNTO 4: Mostrar la cantidad de documentos almacenados en cada una de ellas
+
+    **** TRAIGO LA CANTIDAD DE DOCUMENTOS ALMACENADOS EN productos *****
+    > db.productos.find().length()
+    11
+
+    ******TRAIGO LA CANTIDAD DE DOCUMENTOS ALMACENADOS EN mensajes******
+    > db.productos.find().length()
+    1
+
+
+PUNTO 5: **** Realizar un CRUD sobre la colección de productos: ****
+
+    parte A: ***AGREGO OTRO PRODUCTO EN LA COLECCION productos***
+
+        > db.productos.insert({title:"producto insertado", price: 1010, thumbnail:"ejemploInsert.png"})
+        WriteResult({ "nInserted" : 1 })
+        > db.productos.find()
+        { "_id" : ObjectId("627d5392f41ad24eed608ef5"), "title" : "producto1", "price" : 100, "thumbnail" : "ejemploimg.png" }
+        { "_id" : ObjectId("627d5392f41ad24eed608ef6"), "title" : "producto1", "price" : 2020, "thumbnail" : "ejemploimg.png" }
+        { "_id" : ObjectId("627d5392f41ad24eed608ef7"), "title" : "producto1", "price" : 3100, "thumbnail" : "ejemploimg.png" }
+        { "_id" : ObjectId("627d5392f41ad24eed608ef8"), "title" : "producto1", "price" : 4010, "thumbnail" : "ejemploimg.png" }
+        { "_id" : ObjectId("627d5392f41ad24eed608ef9"), "title" : "producto1", "price" : 2700, "thumbnail" : "ejemploimg.png" }
+        { "_id" : ObjectId("627d5392f41ad24eed608efa"), "title" : "producto1", "price" : 4900, "thumbnail" : "ejemploimg.png" }
+        { "_id" : ObjectId("627d5392f41ad24eed608efb"), "title" : "producto1", "price" : 1900, "thumbnail" : "ejemploimg.png" }
+        { "_id" : ObjectId("627d5392f41ad24eed608efc"), "title" : "producto1", "price" : 5000, "thumbnail" : "ejemploimg.png" }
+        { "_id" : ObjectId("627d5392f41ad24eed608efd"), "title" : "producto1", "price" : 2300, "thumbnail" : "ejemploimg.png" }
+        { "_id" : ObjectId("627d5392f41ad24eed608efe"), "title" : "producto1", "price" : 2765, "thumbnail" : "ejemploimg.png" }
+        { "_id" : ObjectId("627d5392f41ad24eed608eff"), "title" : "producto1", "price" : 4999, "thumbnail" : "ejemploimg.png" }
+        { "_id" : ObjectId("627d5922f41ad24eed608f0a"), "title" : "producto insertado", "price" : 1010, "thumbnail" : "ejemploInsert.png" }
+
+    parte B: *** consulto por nombre de producto especifico ***
+
+        1) ** productos con precio menor a 1000 **
+            > db.productos.find({"price": {$lt:1000}})
+            { "_id" : ObjectId("627d5392f41ad24eed608ef5"), "title" : "producto1", "price" : 100, "thumbnail" : "ejemploimg.png" }
+        
+        2) ** listar productos con precios entre los 1000 y 3000 pesos **
+            > db.productos.find({$and:[{"price":{$gte: 1000}}, {"price": {$lte: 3000}}]})
+            { "_id" : ObjectId("627d5392f41ad24eed608ef6"), "title" : "producto1", "price" : 2020, "thumbnail" : "ejemploimg.png" }
+            { "_id" : ObjectId("627d5392f41ad24eed608ef9"), "title" : "producto1", "price" : 2700, "thumbnail" : "ejemploimg.png" }
+            { "_id" : ObjectId("627d5392f41ad24eed608efb"), "title" : "producto1", "price" : 1900, "thumbnail" : "ejemploimg.png" }
+            { "_id" : ObjectId("627d5392f41ad24eed608efd"), "title" : "producto1", "price" : 2300, "thumbnail" : "ejemploimg.png" }
+            { "_id" : ObjectId("627d5392f41ad24eed608efe"), "title" : "producto1", "price" : 2765, "thumbnail" : "ejemploimg.png" }
+            { "_id" : ObjectId("627d5922f41ad24eed608f0a"), "title" : "producto insertado", "price" : 1010, "thumbnail" : "ejemploInsert.png" }
+        
+        3) ** listar los productos con precio mayor a 3000 **
+            > db.productos.find({"price": {$gt: 3000}})
+            { "_id" : ObjectId("627d5392f41ad24eed608ef7"), "title" : "producto1", "price" : 3100, "thumbnail" : "ejemploimg.png" }
+            { "_id" : ObjectId("627d5392f41ad24eed608ef8"), "title" : "producto1", "price" : 4010, "thumbnail" : "ejemploimg.png" }
+            { "_id" : ObjectId("627d5392f41ad24eed608efa"), "title" : "producto1", "price" : 4900, "thumbnail" : "ejemploimg.png" }
+            { "_id" : ObjectId("627d5392f41ad24eed608efc"), "title" : "producto1", "price" : 5000, "thumbnail" : "ejemploimg.png" }
+            { "_id" : ObjectId("627d5392f41ad24eed608eff"), "title" : "producto1", "price" : 4999, "thumbnail" : "ejemploimg.png" }
+        
+        4) ** traer solo el nombre del tercer producto mas barato ** (el tercero mas barato es de 1900 pesos)
+
+            * asi traigo todo los elementos:
+
+            > db.productos.find().sort({price: 1}).limit(1).skip(2) 
+            { "_id" : ObjectId("627d5392f41ad24eed608efb"), "title" : "producto1", "price" : 1900, "thumbnail" : "ejemploimg.png" }
+
+            * asi solo el nombre: (casi a todos le puse producto1 pero se puede verificar con el comando anterior que si es ese)
+            > db.productos.find({}, {_id: 0, title: 1}).sort({price: 1}).limit(1).skip(2)
+            { "title" : "producto1" }
+
+    
+    PARTE C: *** Hacer una actualización sobre todos los productos, agregando el campo stock a todos ellos con un valor de 100. ***
+        
+        > db.productos.updateMany({}, {$set: {stock: 100}})
+        { "acknowledged" : true, "matchedCount" : 12, "modifiedCount" : 12 }
+
+        ** constatando que si se agrego a todos: **
+
+        > db.productos.find()
+        { "_id" : ObjectId("627d5392f41ad24eed608ef5"), "title" : "producto1", "price" : 100, "thumbnail" : "ejemploimg.png", "stock" : 100 }
+        { "_id" : ObjectId("627d5392f41ad24eed608ef6"), "title" : "producto1", "price" : 2020, "thumbnail" : "ejemploimg.png", "stock" : 100 }
+        { "_id" : ObjectId("627d5392f41ad24eed608ef7"), "title" : "producto1", "price" : 3100, "thumbnail" : "ejemploimg.png", "stock" : 100 }
+        { "_id" : ObjectId("627d5392f41ad24eed608ef8"), "title" : "producto1", "price" : 4010, "thumbnail" : "ejemploimg.png", "stock" : 100 }
+        { "_id" : ObjectId("627d5392f41ad24eed608ef9"), "title" : "producto1", "price" : 2700, "thumbnail" : "ejemploimg.png", "stock" : 100 }
+        { "_id" : ObjectId("627d5392f41ad24eed608efa"), "title" : "producto1", "price" : 4900, "thumbnail" : "ejemploimg.png", "stock" : 100 }
+        { "_id" : ObjectId("627d5392f41ad24eed608efb"), "title" : "producto1", "price" : 1900, "thumbnail" : "ejemploimg.png", "stock" : 100 }
+        { "_id" : ObjectId("627d5392f41ad24eed608efc"), "title" : "producto1", "price" : 5000, "thumbnail" : "ejemploimg.png", "stock" : 100 }
+        { "_id" : ObjectId("627d5392f41ad24eed608efd"), "title" : "producto1", "price" : 2300, "thumbnail" : "ejemploimg.png", "stock" : 100 }
+        { "_id" : ObjectId("627d5392f41ad24eed608efe"), "title" : "producto1", "price" : 2765, "thumbnail" : "ejemploimg.png", "stock" : 100 }
+        { "_id" : ObjectId("627d5392f41ad24eed608eff"), "title" : "producto1", "price" : 4999, "thumbnail" : "ejemploimg.png", "stock" : 100 }
+        { "_id" : ObjectId("627d5922f41ad24eed608f0a"), "title" : "producto insertado", "price" : 1010, "thumbnail" : "ejemploInsert.png", "stock" : 100 }
+    
+
+    PARTE D: *** Cambiar el stock a cero de los productos con precios mayores a 4000 pesos. ***
+
+        > db.productos.updateMany({"price": {$gt: 4000}}, {$set: {stock: 0}})
+        { "acknowledged" : true, "matchedCount" : 4, "modifiedCount" : 4 }
+
+        ** constatando que si se actualizaron a todos con price > 4000: **
+
+        > db.productos.find()
+        { "_id" : ObjectId("627d5392f41ad24eed608ef5"), "title" : "producto1", "price" : 100, "thumbnail" : "ejemploimg.png", "stock" : 100 }
+        { "_id" : ObjectId("627d5392f41ad24eed608ef6"), "title" : "producto1", "price" : 2020, "thumbnail" : "ejemploimg.png", "stock" : 100 }
+        { "_id" : ObjectId("627d5392f41ad24eed608ef7"), "title" : "producto1", "price" : 3100, "thumbnail" : "ejemploimg.png", "stock" : 100 }
+        { "_id" : ObjectId("627d5392f41ad24eed608ef8"), "title" : "producto1", "price" : 4010, "thumbnail" : "ejemploimg.png", "stock" : 0 }
+        { "_id" : ObjectId("627d5392f41ad24eed608ef9"), "title" : "producto1", "price" : 2700, "thumbnail" : "ejemploimg.png", "stock" : 100 }
+        { "_id" : ObjectId("627d5392f41ad24eed608efa"), "title" : "producto1", "price" : 4900, "thumbnail" : "ejemploimg.png", "stock" : 0 }
+        { "_id" : ObjectId("627d5392f41ad24eed608efb"), "title" : "producto1", "price" : 1900, "thumbnail" : "ejemploimg.png", "stock" : 100 }
+        { "_id" : ObjectId("627d5392f41ad24eed608efc"), "title" : "producto1", "price" : 5000, "thumbnail" : "ejemploimg.png", "stock" : 0 }
+        { "_id" : ObjectId("627d5392f41ad24eed608efd"), "title" : "producto1", "price" : 2300, "thumbnail" : "ejemploimg.png", "stock" : 100 }
+        { "_id" : ObjectId("627d5392f41ad24eed608efe"), "title" : "producto1", "price" : 2765, "thumbnail" : "ejemploimg.png", "stock" : 100 }
+        { "_id" : ObjectId("627d5392f41ad24eed608eff"), "title" : "producto1", "price" : 4999, "thumbnail" : "ejemploimg.png", "stock" : 0 }
+        { "_id" : ObjectId("627d5922f41ad24eed608f0a"), "title" : "producto insertado", "price" : 1010, "thumbnail" : "ejemploInsert.png", "stock" : 100 }
+    
+
+    PARTE E: *** Borrar los productos con precio menor a 1000 pesos  ***
+
+        db.productos.deleteMany({"price": {$lt: 1000}})
+        { "acknowledged" : true, "deletedCount" : 0 }
+
+        ** constato que si se haya eliminado: ** (se elimino el unico que ingrese con precio menor a 1000, id: 627d5392f41ad24eed608ef5 )
+
+        > db.productos.find()
+        { "_id" : ObjectId("627d5392f41ad24eed608ef6"), "title" : "producto1", "price" : 2020, "thumbnail" : "ejemploimg.png", "stock" : 100 }
+        { "_id" : ObjectId("627d5392f41ad24eed608ef7"), "title" : "producto1", "price" : 3100, "thumbnail" : "ejemploimg.png", "stock" : 100 }
+        { "_id" : ObjectId("627d5392f41ad24eed608ef8"), "title" : "producto1", "price" : 4010, "thumbnail" : "ejemploimg.png", "stock" : 0 }
+        { "_id" : ObjectId("627d5392f41ad24eed608ef9"), "title" : "producto1", "price" : 2700, "thumbnail" : "ejemploimg.png", "stock" : 100 }
+        { "_id" : ObjectId("627d5392f41ad24eed608efa"), "title" : "producto1", "price" : 4900, "thumbnail" : "ejemploimg.png", "stock" : 0 }
+        { "_id" : ObjectId("627d5392f41ad24eed608efb"), "title" : "producto1", "price" : 1900, "thumbnail" : "ejemploimg.png", "stock" : 100 }
+        { "_id" : ObjectId("627d5392f41ad24eed608efc"), "title" : "producto1", "price" : 5000, "thumbnail" : "ejemploimg.png", "stock" : 0 }
+        { "_id" : ObjectId("627d5392f41ad24eed608efd"), "title" : "producto1", "price" : 2300, "thumbnail" : "ejemploimg.png", "stock" : 100 }
+        { "_id" : ObjectId("627d5392f41ad24eed608efe"), "title" : "producto1", "price" : 2765, "thumbnail" : "ejemploimg.png", "stock" : 100 }
+        { "_id" : ObjectId("627d5392f41ad24eed608eff"), "title" : "producto1", "price" : 4999, "thumbnail" : "ejemploimg.png", "stock" : 0 }
+        { "_id" : ObjectId("627d5922f41ad24eed608f0a"), "title" : "producto insertado", "price" : 1010, "thumbnail" : "ejemploInsert.png", "stock" : 100 }
+        
+
+PUNTO 6: ***** Crear un usuario 'pepe' clave: 'asd456' que sólo pueda leer la base de datos ecommerce. Verificar que pepe no pueda cambiar la información. ******
+
+
+        ***Creando el usuario***
+
+        > use admin
+        switched to db admin
+        > db.createUser({user: "pepe", pwd: "asd456", roles: [ {role: "read", db: "ecommerce"} ]})
+        Successfully added user: {
+                "user" : "pepe",
+                "roles" : [
+                        {
+                                "role" : "read",
+                                "db" : "ecommerce"
+                        }
+                ]
+        }
+        
+        ***comprobando que no pueda modificar nada***
+
+        > db.productos.insert({title:"productoPruebaUserPepe", price: 123456, thumbnail:"pruebauser.png"})
+        WriteCommandError({
+        "ok" : 0,
+        "errmsg" : "not authorized on ecommerce to execute command { insert: \"productos\", ordered: true, lsid: { id: UUID(\"41295edd-2cd3-4755-a129-2682af5dffd4\") }, $db: \"ecommerce\" }",
+        "code" : 13,
+        "codeName" : "Unauthorized"
+})
+>
+
+    
+
